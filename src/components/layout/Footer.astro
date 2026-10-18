@@ -22,7 +22,7 @@ interface NavLink {
 }
 
 const exploreLinks: NavLink[] = [
-  { label: 'Browse Builds', href: withBase('/#build-progress') },
+  { label: 'Browse Builds', href: withBase('/#featured-builds') },
   { label: 'How It Works', href: withBase('/how-it-works') },
   { label: 'Features', href: withBase('/features') },
   { label: 'WBuilds vs YouTube', href: withBase('/vs-youtube-schematica') },
@@ -396,14 +396,14 @@ const languages = [
     align-items: stretch;
   }
 
-  /* --- LEFT CARD: DOWNLOAD CTA (Solid Dark #111215, Vertically Thinner: min-height 280px, No Border) --- */
+  /* --- LEFT CARD: DOWNLOAD CTA (Light Off-White Surface matching newsletter #f7f7f8) --- */
   .card-download {
     position: relative;
     overflow: hidden;
-    background-color: #111215;
+    background-color: #f7f7f8;
     border-radius: 24px;
-    border: none;
-    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.18);
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.04);
     display: flex;
     align-items: center;
     min-height: 280px;
@@ -428,7 +428,7 @@ const languages = [
     font-weight: 600;
     line-height: 1.18;
     letter-spacing: -0.6px;
-    color: #ffffff;
+    color: #111215;
     margin: 0;
   }
 
@@ -438,7 +438,7 @@ const languages = [
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.15px;
-    color: rgba(255, 255, 255, 0.7);
+    color: #71717a;
     margin: 8px 0 0;
     max-width: 440px;
   }
@@ -481,27 +481,28 @@ const languages = [
     flex-shrink: 0;
   }
 
-  /* iOS Button: Solid White with Dark Text */
+  /* iOS Button: Solid Dark #111215 with Crisp White Text */
   .btn-ios {
-    background-color: #ffffff;
-    color: #111215;
-    border: 1px solid #ffffff;
+    background-color: #111215;
+    color: #ffffff;
+    border: 1px solid #111215;
   }
 
   .btn-ios:hover {
-    background-color: #f4f4f5;
+    background-color: #27272a;
+    border-color: #27272a;
   }
 
-  /* Android Button: Transparent with Subtle White Border */
+  /* Android Button: Clean Crisp White with Dark Text and Subtle Border */
   .btn-android {
-    background-color: transparent;
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.35);
+    background-color: #ffffff;
+    color: #111215;
+    border: 1px solid #e4e4e7;
   }
 
   .btn-android:hover {
-    background-color: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.55);
+    background-color: #f4f4f5;
+    border-color: #d4d4d8;
   }
 
   /* Mockup Graphic Positioning Matching 1:1 Reference */
@@ -523,7 +524,7 @@ const languages = [
     height: auto;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.12));
   }
 
   /* --- RIGHT CARD: NEWSLETTER SUBSCRIBE (Light Off-White Surface, Subtle BnW Border #f0f0f0) --- */
