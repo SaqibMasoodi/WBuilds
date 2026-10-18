@@ -1,0 +1,448 @@
+---
+// FaqSection.astro
+// Follows the exact BnW reference layout from the screenshot:
+// - Left Column: Image container displaying irongole.jpg (proportional, non-sticky).
+// - Right Column: FAQ accordion at its original width (~680px), compact, no excessive white space.
+// - Header: Clean sans-serif "Frequently asked questions" + subtitle (no pills, no italics).
+// - Cards: Overlapping card stack with negative margin (-24px).
+//   - Collapsed: Off-white (#fafafa), subtle 1px border (#f0f0f0), dark text (#111215), right chevron (>).
+//   - Active: Solid dark charcoal (#111215), no border, crisp white text (#ffffff), down chevron (v).
+// - Behavior: Exactly ONE FAQ remains open at all times so the overall section size remains constant.
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  imageSrc?: string;
+  faqs?: FaqItem[];
+}
+
+const defaultFaqs: FaqItem[] = [
+  {
+    question: 'What are some cool things to build in Minecraft?',
+    answer:
+      'Browse 600+ ready build ideas: houses, castles, farms, statues, nether portals, storage rooms, and full survival bases, organized by category and difficulty. Whatever you want to create, follow it block by block instead of thinking one up from scratch.',
+  },
+  {
+    question: 'What should I build in Minecraft survival?',
+    answer:
+      'Start with a starter house, then add a crop farm, a storage house, and an XP farm as your resources grow. Every WBuilds guide is rated Easy, Medium, or Hard, so it is simple to find things to build in Minecraft survival that match what you have.',
+  },
+  {
+    question: 'What types of minecraft house builds are available?',
+    answer:
+      'Starter houses, modern houses, cottages, Japanese houses, treehouses, lake houses, and underground bases. Houses are the biggest category in WBuilds, and every minecraft house build comes with its own step-by-step guide and material list.',
+  },
+  {
+    question: 'How do the step-by-step building tutorials work in WBuilds?',
+    answer:
+      'You get the full material list before you start, so you can gather everything first. Then every numbered step shows exactly which blocks to place and where, outlined in the image like LEGO instructions. Your progress is saved automatically.',
+  },
+  {
+    question: 'How often are new minecraft building tutorials added?',
+    answer:
+      'Every week. New builds drop every single Friday, spread across houses, survival bases, farms, and redstone contraptions. You will always have fresh projects to build in your Minecraft worlds.',
+  },
+];
+
+const {
+  title = 'Frequently asked questions',
+  subtitle = 'Everything you need to know about WBuilds guides, exact material lists, and editions.',
+  imageSrc = '/irongole.jpg',
+  faqs = defaultFaqs,
+} = Astro.props;
+---
+
+<section class="faq-section" id="faq">
+  <div class="faq-wrapper">
+    <div class="faq-grid">
+      <!-- Left Column: Image Container (Natural proportional fit, non-sticky) -->
+      <div class="faq-image-column">
+        <div class="faq-image-card">
+          <img
+            src={imageSrc}
+            alt="Minecraft Iron Golem build blueprint showcase"
+            class="faq-showcase-image"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <!-- Right Column: FAQ Content (Original Compact Width, No Gap/Void) -->
+      <div class="faq-content-column">
+        <div class="faq-header">
+          <h2 class="faq-title">{title}</h2>
+          <p class="faq-subtitle">{subtitle}</p>
+        </div>
+
+        <!-- Overlapping Accordion Stack (Constant Height) -->
+        <div class="faq-stack" role="region" aria-label="Frequently Asked Questions">
+          {faqs.map((faq, index) => (
+            <div
+              class={`faq-card ${index === 2 ? 'active' : ''}`}
+              data-faq-index={index}
+              tabindex="0"
+              role="button"
+              aria-expanded={index === 2 ? 'true' : 'false'}
+              aria-controls={`faq-body-${index}`}
+            >
+              <div class="faq-card-top">
+                <h3 class="faq-card-question">{faq.question}</h3>
+                <div class="faq-chevron-wrapper" aria-hidden="true">
+                  <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </div>
+              </div>
+              <div class="faq-card-body" id={`faq-body-${index}`}>
+                <div class="faq-card-body-inner">
+                  <p class="faq-card-answer">{faq.answer}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initFaqStack() {
+    const cards = document.querySelectorAll<HTMLElement>('.faq-card');
+
+    cards.forEach((card) => {
+      const selectCard = () => {
+        // If clicking the currently active card, keep it open so exactly 1 is always open
+        if (card.classList.contains('active')) return;
+
+        // Close other cards
+        cards.forEach((other) => {
+          if (other !== card) {
+            other.classList.remove('active');
+            other.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Open selected card
+        card.classList.add('active');
+        card.setAttribute('aria-expanded', 'true');
+      };
+
+      card.addEventListener('click', selectCard);
+
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          selectCard();
+        }
+      });
+    });
+  }
+
+  initFaqStack();
+  document.addEventListener('astro:page-load', initFaqStack);
+</script>
+
+<style>
+  /* ========================================================
+     SECTION ROOT & 2-COLUMN WRAPPER (Tight, Balanced Spacing)
+     ======================================================== */
+  .faq-section {
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    padding: 64px 48px 80px;
+    box-sizing: border-box;
+  }
+
+  .faq-wrapper {
+    max-width: 1440px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* 2-Column Grid: Natural start alignment (No artificial vertical stretching) */
+  .faq-grid {
+    display: grid;
+    grid-template-columns: minmax(340px, 1fr) minmax(500px, 680px);
+    gap: 48px;
+    align-items: start;
+    width: 100%;
+  }
+
+  /* ========================================================
+     LEFT COLUMN: IMAGE CONTAINER (Proportional, Non-Sticky)
+     ======================================================== */
+  .faq-image-column {
+    position: relative;
+    top: 0;
+    width: 100%;
+  }
+
+  .faq-image-card {
+    position: relative;
+    width: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: #111215;
+    box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.12);
+    border: none;
+    aspect-ratio: 736 / 981;
+    max-height: 590px;
+  }
+
+  .faq-showcase-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 24px;
+    transition: transform 0.4s ease;
+  }
+
+  .faq-image-card:hover .faq-showcase-image {
+    transform: scale(1.02);
+  }
+
+  /* ========================================================
+     RIGHT COLUMN: CONTENT & ACCORDION (No Gaps/Voids)
+     ======================================================== */
+  .faq-content-column {
+    width: 100%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faq-header {
+    text-align: left;
+    margin-bottom: 28px;
+  }
+
+  .faq-title {
+    font-family: var(--font-heading, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: clamp(28px, 2.4vw, 38px);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.8px;
+    color: #111215;
+    margin: 0;
+  }
+
+  .faq-subtitle {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.1px;
+    color: #71717a;
+    margin: 10px 0 0;
+    max-width: 540px;
+  }
+
+  /* ========================================================
+     OVERLAPPING ACCORDION STACK (Constant Height Architecture)
+     ======================================================== */
+  .faq-stack {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Each Card: Rounded corners (22px), Negative Top Margin Stacking, Ultra-Subtle Borders */
+  .faq-card {
+    position: relative;
+    width: 100%;
+    background-color: #fafafa;
+    border: 1px solid rgba(0, 0, 0, 0.035);
+    border-radius: 22px;
+    padding: 26px 34px 44px; /* Generous bottom padding to account for overlap */
+    box-sizing: border-box;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    box-shadow: 0 4px 14px -3px rgba(0, 0, 0, 0.03);
+    transition: background-color 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.28s ease,
+                box-shadow 0.28s ease,
+                transform 0.2s ease;
+  }
+
+  /* Subsequent cards overlap previous card by 24px */
+  .faq-card:not(:first-child) {
+    margin-top: -24px;
+  }
+
+  /* The very last card does not have another card covering its bottom */
+  .faq-card:last-child {
+    padding-bottom: 26px;
+  }
+
+  .faq-card:hover {
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.05);
+  }
+
+  .faq-card:focus-visible {
+    box-shadow: 0 0 0 3px rgba(17, 18, 21, 0.15);
+  }
+
+  /* Top Question Row */
+  .faq-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .faq-card-question {
+    font-family: var(--font-heading, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: clamp(15.5px, 1.3vw, 18px);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.3px;
+    color: #111215;
+    margin: 0;
+    transition: color 0.25s ease;
+  }
+
+  /* Right Chevron (>) - No Border */
+  .faq-chevron-wrapper {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+  }
+
+  .faq-chevron {
+    width: 16px;
+    height: 16px;
+    color: #111215;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease;
+  }
+
+  /* ========================================================
+     ACTIVE CARD STATE (Solid Dark #111215, No Border)
+     ======================================================== */
+  .faq-card.active {
+    background-color: #111215;
+    border: none; /* No border on active card */
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.24);
+  }
+
+  .faq-card.active .faq-card-question {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* Chevron turns white and rotates 90deg to point down (v) */
+  .faq-card.active .faq-chevron {
+    color: #ffffff;
+    transform: rotate(90deg);
+  }
+
+  /* ========================================================
+     EXPANDABLE ANSWER BODY (CSS Grid 0fr -> 1fr with Uniform Height)
+     ======================================================== */
+  .faq-card-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .faq-card.active .faq-card-body {
+    grid-template-rows: 1fr;
+  }
+
+  .faq-card-body-inner {
+    overflow: hidden;
+  }
+
+  /* Uniform min-height guarantees identical stack size regardless of which FAQ is opened */
+  .faq-card-answer {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.1px;
+    color: #dfdfdf;
+    margin: 14px 0 0;
+    max-width: 580px;
+    min-height: 72px; /* Uniform height across all 5 answers */
+    display: flex;
+    align-items: flex-start;
+  }
+
+  /* ========================================================
+     RESPONSIVE BREAKPOINTS
+     ======================================================== */
+  @media (max-width: 1080px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .faq-image-column {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .faq-image-card {
+      max-height: 440px;
+    }
+
+    .faq-content-column {
+      max-width: 100%;
+    }
+
+    .faq-header {
+      text-align: center;
+    }
+
+    .faq-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .faq-section {
+      padding: 48px 16px 56px;
+    }
+
+    .faq-card {
+      padding: 20px 20px 36px;
+      border-radius: 18px;
+    }
+
+    .faq-card:not(:first-child) {
+      margin-top: -18px;
+    }
+
+    .faq-card:last-child {
+      padding-bottom: 20px;
+    }
+
+    .faq-card-question {
+      font-size: 15px;
+    }
+
+    .faq-card-answer {
+      font-size: 13.5px;
+      min-height: auto;
+    }
+  }
+</style>

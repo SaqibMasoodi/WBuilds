@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import BenefitsSection from '../components/sections/BenefitsSection.astro';
+import BuildProgressDashboard from '../components/sections/BuildProgressDashboard.astro';
+import AppStructureSection from '../components/sections/AppStructureSection.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
+import { siteConfig } from '../data/site';
+---
+
+<BaseLayout title="WBuilds — Minecraft Builds & Blueprints Made Simple">
+  <Hero />
+  <BenefitsSection />
+  <BuildProgressDashboard />
+  <AppStructureSection />
+  <FaqSection />
+</BaseLayout>

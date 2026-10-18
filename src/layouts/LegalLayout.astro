@@ -1,0 +1,53 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  lastUpdated?: string;
+}
+
+const { title, lastUpdated } = Astro.props;
+---
+
+<BaseLayout title={title}>
+  <div class="legal-page">
+    <div class="container-narrow">
+      <header class="legal-header">
+        <h1>{title}</h1>
+        {lastUpdated && <p class="last-updated">Last Updated: {lastUpdated}</p>}
+      </header>
+      <article class="legal-content">
+        <slot />
+      </article>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: calc(var(--nav-height) + var(--space-8));
+    padding-bottom: var(--space-16);
+  }
+  .legal-header {
+    margin-bottom: var(--space-8);
+    border-bottom: 1px solid var(--color-border-default);
+    padding-bottom: var(--space-4);
+  }
+  .last-updated {
+    margin-top: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+  .legal-content :global(h2) {
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-3);
+  }
+  .legal-content :global(p) {
+    margin-bottom: var(--space-4);
+  }
+  .legal-content :global(ul) {
+    margin-bottom: var(--space-4);
+    padding-left: var(--space-6);
+    list-style: disc;
+  }
+</style>

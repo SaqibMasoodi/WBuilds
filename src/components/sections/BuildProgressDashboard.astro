@@ -1,0 +1,834 @@
+---
+interface Props {
+  heading?: string;
+  subtitle?: string;
+}
+
+const {
+  heading = 'Your next build, taking shape.',
+  subtitle = 'One block at a time. Clear material lists, visual steps, and builds you can actually finish.',
+} = Astro.props;
+
+// 14-day building activity data
+const activityBars = [
+  { day: 'M', height: 42, active: false },
+  { day: 'T', height: 78, active: false },
+  { day: 'W', height: 26, active: false },
+  { day: 'T', height: 50, active: false },
+  { day: 'F', height: 86, active: false },
+  { day: 'S', height: 32, active: false },
+  { day: 'S', height: 58, active: false },
+  { day: 'M', height: 52, active: false },
+  { day: 'T', height: 82, active: false },
+  { day: 'W', height: 38, active: false },
+  { day: 'T', height: 74, active: false },
+  { day: 'F', height: 92, active: false },
+  { day: 'S', height: 64, active: false },
+  { day: 'S', height: 70, active: true }, // Current active day
+];
+---
+
+<section class="dashboard-section" id="build-progress">
+  <div class="dashboard-container">
+    <!-- Header Stack -->
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">{heading}</h2>
+      <p class="dashboard-subtitle">{subtitle}</p>
+    </div>
+
+    <!-- Bento Grid -->
+    <div class="bento-grid">
+      <!-- LEFT COLUMN (flex: 2 0 0; gap: 16px) -->
+      <div class="bento-left-col">
+        <!-- Row 1 (gap: 16px; height: 224px) -->
+        <div class="bento-row-top">
+          <!-- Card 1: Current Build (flex: 1.7 0 0; height: 224px; padding: 24px) -->
+          <article class="bento-card card-dark-project">
+            <div class="project-content">
+              <span class="card-eyebrow">CURRENT PROJECT</span>
+              <h3 class="project-title">One block<br />at a time.</h3>
+              <p class="project-meta">Starter House · Step 24 of 42</p>
+              <a href="#builds" class="project-cta">
+                <span>Continue building</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+
+            <!-- Circular Progress Indicator (top: 39px; right: 20px; width: 146px; height: 146px) -->
+            <div class="circular-progress-wrap" aria-label="Step 24 of 42, 58% complete">
+              <svg class="progress-ring" viewBox="0 0 146 146">
+                <circle class="ring-bg" cx="73" cy="73" r="62" />
+                <circle class="ring-fill" cx="73" cy="73" r="62" />
+              </svg>
+              <div class="progress-center-text">
+                <span class="progress-number">24/42</span>
+                <span class="progress-label">STEPS</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2: Materials Gathered (flex: 1 0 0; height: 224px; padding: 24px) -->
+          <article class="bento-card card-metric-materials">
+            <span class="card-eyebrow text-muted">MATERIALS GATHERED</span>
+            <div class="metric-number-stack">
+              <span class="metric-big">04</span>
+              <span class="metric-total">of 12 materials</span>
+            </div>
+
+            <!-- Segmented Progress Bar (bottom: 24px; left: 24px; width: calc(100% - 48px); height: 5px) -->
+            <div class="segmented-bar" aria-label="4 of 12 materials gathered">
+              <span class="bar-segment filled"></span>
+              <span class="bar-segment filled"></span>
+              <span class="bar-segment filled"></span>
+              <span class="bar-segment filled"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+              <span class="bar-segment"></span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Row 2 (gap: 16px; height: 330px) -->
+        <div class="bento-row-mid">
+          <!-- Card 3: Beginner Friendly (flex: 1 0 0; height: 330px; padding: 24px) -->
+          <article class="bento-card card-sky-beginner">
+            <span class="card-eyebrow text-sky-dark">BEGINNER FRIENDLY</span>
+            <div class="sky-content">
+              <h3 class="sky-title">Start with<br />something simple.</h3>
+              <p class="sky-meta">Starter Cottage · 42 steps · Easy</p>
+            </div>
+          </article>
+
+          <!-- Card 4: Step-by-Step Blueprint Interface (flex: 1.7 0 0; height: 330px; padding: 36px 32px) -->
+          <article class="bento-card card-dark-blueprint">
+            <div class="blueprint-content">
+              <span class="card-eyebrow">STEP-BY-STEP</span>
+              <h3 class="blueprint-title">Less rush.<br />More building.</h3>
+              <p class="blueprint-desc">Follow every single block with exact material counts.</p>
+            </div>
+          </article>
+        </div>
+
+        <!-- Row 3: 14-Day Activity Bar Chart (height: 248px; padding: 24px; width: 100%) -->
+        <article class="bento-card card-chart-streak">
+          <div class="chart-header">
+            <h4 class="chart-title">Your worlds, taking shape.</h4>
+            <span class="chart-period">14 DAYS</span>
+          </div>
+
+          <div class="chart-bars-wrap">
+            {activityBars.map((bar) => (
+              <div class="chart-col">
+                <div class="bar-track">
+                  <div
+                    class={`bar-fill ${bar.active ? 'active-fill' : ''}`}
+                    style={`height: ${bar.height}%;`}
+                  ></div>
+                </div>
+                <span class="bar-day">{bar.day}</span>
+              </div>
+            ))}
+          </div>
+
+          <p class="chart-footer-note">Some days more. Some days less. Every block counts.</p>
+        </article>
+      </div>
+
+      <!-- RIGHT COLUMN (flex: 1 0 0; gap: 16px; align-self: stretch) -->
+      <div class="bento-right-col">
+        <!-- Card 6: Large Tall Image Card (flex: 1 0 0; height: auto; min-height: 480px) -->
+        <article class="bento-card card-tall-image">
+          <img
+            src="/builds/build.jpg"
+            alt="Oak Shade Minecraft Build"
+            class="tall-bg-img"
+            loading="lazy"
+          />
+          <div class="tall-overlay">
+            <span class="card-eyebrow text-light-dim">FEATURED BLUEPRINT</span>
+            <h3 class="tall-title">Oak Shade.</h3>
+            <p class="tall-tag">A quiet place to call home · 64 steps</p>
+          </div>
+        </article>
+
+        <!-- Card 7: Night-Sky Card (height: 328px; padding: 24px) -->
+        <article class="bento-card card-night-offline">
+          <div class="night-ambient-glow" aria-hidden="true"></div>
+          
+          <div class="night-top">
+            <svg class="night-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <span class="card-eyebrow text-light-dim">OFFLINE READY</span>
+          </div>
+
+          <div class="night-stat">
+            <span class="night-number">600+</span>
+            <h3 class="night-title">Build without limits.</h3>
+            <p class="night-sub">Download guides to your device. No internet required in your world.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dashboard-section {
+    position: relative;
+    width: 100%;
+    padding: 0 48px 144px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+  }
+
+  .dashboard-container {
+    max-width: 1600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 56px;
+  }
+
+  /* Centered Header */
+  .dashboard-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 760px;
+    width: 100%;
+  }
+
+  .dashboard-title {
+    font-family: var(--font-heading);
+    font-size: clamp(36px, 4.5vw, 64px);
+    font-weight: 400;
+    line-height: 1.06em;
+    letter-spacing: -3.6px;
+    color: #111111;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .dashboard-subtitle {
+    font-family: var(--font-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5em;
+    letter-spacing: -0.3px;
+    color: #71717a;
+    max-width: 540px;
+    margin: 0;
+  }
+
+  /* Bento 2-Column Grid */
+  .bento-grid {
+    width: 100%;
+    max-width: 1600px;
+    display: flex;
+    flex-flow: row;
+    place-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  /* Left Column (flex: 2 0 0; gap: 16px) */
+  .bento-left-col {
+    flex: 2 0 0;
+    width: 1px;
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+  }
+
+  /* Right Column (flex: 1 0 0; gap: 16px; align-self: stretch) */
+  .bento-right-col {
+    flex: 1 0 0;
+    width: 1px;
+    align-self: stretch;
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+  }
+
+  /* Base Card */
+  .bento-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: var(--overflow-clip-fallback, clip);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .bento-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Eyebrows (12px, font-weight: 500, letter-spacing: -0.1px) */
+  .card-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: -0.1px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .card-eyebrow.text-muted {
+    color: #71717a;
+  }
+
+  .card-eyebrow.text-sky-dark {
+    color: #71717a;
+  }
+
+  .card-eyebrow.text-light-dim {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* ========================================================
+     ROW 1: height 224px (Focus Card + Hydration Metric Card)
+     ======================================================== */
+  .bento-row-top {
+    display: flex;
+    flex-flow: row;
+    gap: 16px;
+    width: 100%;
+    height: 224px;
+  }
+
+  /* Card 1: Focus / Current Project (flex: 1.7 0 0; height: 224px; padding: 24px) */
+  .card-dark-project {
+    flex: 1.7 0 0;
+    width: 1px;
+    height: 224px;
+    padding: 24px;
+    background-color: #111215;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+
+  .project-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 320px;
+    z-index: 2;
+  }
+
+  .project-title {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1em;
+    letter-spacing: -1px;
+    color: #ffffff;
+    margin: 0 0 6px;
+  }
+
+  .project-meta {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4em;
+    letter-spacing: -0.1px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 0 12px;
+  }
+
+  .project-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: gap var(--transition-fast), opacity var(--transition-fast);
+  }
+
+  .project-cta:hover {
+    gap: 10px;
+    opacity: 0.85;
+  }
+
+  .project-cta svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* Circular Focus Widget (top: 39px; right: 20px; width: 146px; height: 146px) */
+  .circular-progress-wrap {
+    position: absolute;
+    top: 39px;
+    right: 20px;
+    width: 146px;
+    height: 146px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .progress-ring {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 8;
+  }
+
+  .ring-fill {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 390;
+    stroke-dashoffset: 160; /* ~58% fill */
+  }
+
+  .progress-center-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .progress-number {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1em;
+    letter-spacing: -1px;
+    color: #ffffff;
+  }
+
+  .progress-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* Card 2: Materials Metric (flex: 1 0 0; height: 224px; padding: 24px) */
+  .card-metric-materials {
+    flex: 1 0 0;
+    width: 1px;
+    height: 224px;
+    padding: 24px;
+    background-color: #f4f4f5;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .metric-number-stack {
+    display: flex;
+    flex-direction: column;
+    margin: 4px 0 0;
+  }
+
+  .metric-big {
+    font-family: var(--font-heading);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1em;
+    letter-spacing: -1px;
+    color: #111111;
+  }
+
+  .metric-total {
+    font-size: 14px;
+    font-weight: 400;
+    color: #71717a;
+    margin-top: 4px;
+  }
+
+  /* 12-segment progress dashes */
+  .segmented-bar {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    width: calc(100% - 48px);
+    height: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .bar-segment {
+    flex: 1 0 0;
+    height: 5px;
+    border-radius: 3px;
+    background-color: #e4e4e7;
+  }
+
+  .bar-segment.filled {
+    background-color: #111111;
+  }
+
+  /* ========================================================
+     ROW 2: height 330px
+     ======================================================== */
+  .bento-row-mid {
+    display: flex;
+    flex-flow: row;
+    gap: 16px;
+    width: 100%;
+    height: 330px;
+  }
+
+  /* Card 3: Beginner Friendly */
+  .card-sky-beginner {
+    flex: 1 0 0;
+    width: 1px;
+    height: 330px;
+    padding: 24px;
+    background-color: #f4f4f5;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  .card-sky-beginner .card-eyebrow {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+  }
+
+  .sky-title {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1em;
+    letter-spacing: -1px;
+    color: #111111;
+    margin: 0 0 6px;
+  }
+
+  .sky-meta {
+    font-size: 14px;
+    color: #71717a;
+    margin: 0;
+  }
+
+  /* Card 4: Step-by-Step Blueprint Interface */
+  .card-dark-blueprint {
+    flex: 1.7 0 0;
+    width: 1px;
+    height: 330px;
+    padding: 36px 32px;
+    background-color: #111215;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .blueprint-content {
+    max-width: 440px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .blueprint-title {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1em;
+    letter-spacing: -1px;
+    color: #ffffff;
+    margin: 0 0 12px;
+  }
+
+  .blueprint-desc {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.5em;
+    margin: 0;
+    max-width: 400px;
+  }
+
+  /* ========================================================
+     ROW 3: height 248px (14-Day Activity Bar Chart)
+     ======================================================== */
+  .card-chart-streak {
+    width: 100%;
+    height: 248px;
+    padding: 24px;
+    background-color: #f4f4f5;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .chart-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chart-title {
+    font-family: var(--font-heading);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    color: #111111;
+    margin: 0;
+  }
+
+  .chart-period {
+    font-size: 12px;
+    font-weight: 500;
+    color: #71717a;
+    letter-spacing: -0.1px;
+  }
+
+  .chart-bars-wrap {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 8px;
+    height: 110px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .chart-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 100%;
+  }
+
+  .bar-track {
+    width: 100%;
+    max-width: 28px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .bar-fill {
+    width: 100%;
+    border-radius: 6px;
+    background-color: #e4e4e7;
+    transition: height var(--transition-base), background-color var(--transition-fast);
+  }
+
+  .bar-fill:hover {
+    background-color: #a1a1aa;
+  }
+
+  .bar-fill.active-fill {
+    background-color: #111111;
+  }
+
+  .bar-day {
+    font-size: 12px;
+    font-weight: 500;
+    color: #71717a;
+  }
+
+  .chart-footer-note {
+    font-size: 13px;
+    color: #71717a;
+    margin: 0;
+  }
+
+  /* ========================================================
+     RIGHT COLUMN: Tall Image Card + Night Card (328px)
+     ======================================================== */
+  /* Card 6: Tall Image Card */
+  .card-tall-image {
+    flex: 1 0 0;
+    width: 100%;
+    min-height: 480px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    background-color: #111215;
+  }
+
+  .tall-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .tall-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 50px 24px 24px;
+    background: linear-gradient(to top, rgba(17, 18, 21, 0.95) 0%, rgba(17, 18, 21, 0.35) 60%, transparent 100%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tall-title {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1em;
+    letter-spacing: -1px;
+    color: #ffffff;
+    margin: 0 0 6px;
+  }
+
+  .tall-tag {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+  }
+
+  /* Card 7: Night Offline Card (height: 328px; padding: 24px) */
+  .card-night-offline {
+    height: 328px;
+    width: 100%;
+    padding: 24px;
+    border-radius: 24px;
+    background-color: #111215;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .night-ambient-glow {
+    position: absolute;
+    top: -20%;
+    right: -20%;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .night-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .night-icon {
+    width: 32px;
+    height: 32px;
+    color: #ffffff;
+  }
+
+  .night-stat {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+  }
+
+  .night-number {
+    font-family: var(--font-heading);
+    font-size: 64px;
+    font-weight: 400;
+    line-height: 1em;
+    letter-spacing: -1px;
+    color: #ffffff;
+    margin: 0 0 8px;
+  }
+
+  .night-title {
+    font-family: var(--font-heading);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.6px;
+    line-height: 1.2em;
+    color: #ffffff;
+    margin: 0 0 8px;
+  }
+
+  .night-sub {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    line-height: 1.45em;
+    margin: 0;
+  }
+
+  /* Responsive Behavior */
+  @media (max-width: 1140px) {
+    .dashboard-section {
+      padding: 0 32px 96px;
+    }
+    .bento-grid {
+      width: 100%;
+      flex-direction: column;
+    }
+    .bento-left-col,
+    .bento-right-col {
+      width: 100%;
+      flex: none;
+    }
+    .card-tall-image {
+      min-height: 400px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-section {
+      padding: 0 20px 80px;
+    }
+    .bento-row-top,
+    .bento-row-mid {
+      flex-direction: column;
+      height: auto;
+    }
+    .card-dark-project,
+    .card-metric-materials,
+    .card-sky-beginner,
+    .card-dark-blueprint,
+    .card-chart-streak,
+    .card-night-offline {
+      height: auto;
+      min-height: 224px;
+    }
+    .circular-progress-wrap {
+      position: static;
+      margin: 16px 0 0;
+    }
+  }
+</style>

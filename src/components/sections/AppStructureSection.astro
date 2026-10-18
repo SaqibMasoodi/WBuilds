@@ -1,0 +1,646 @@
+---
+// AppStructureSection.astro
+// Scroll-driven three-step section for WBuilds:
+// "Three Steps to Cool Minecraft Builds"
+// - Pinned / sticky scroll interaction advancing Step 01 -> Step 02 -> Step 03
+// - Left column displays ONLY the active step's text (no stacked/scrollable text)
+// - Right column displays the matching app mockup clipped bottom ~20%
+// - Enclosed in black background card matching hero / download framing (no pill tags)
+
+interface Props {
+  headingLine1?: string;
+  headingLine2?: string;
+  subtitle?: string;
+}
+
+const {
+  headingLine1 = 'Three steps to',
+  headingLine2 = 'cool Minecraft builds.',
+  subtitle = 'Minecraft building tutorials have never been this easy to follow. Turn any finished build into clear, block-by-block instructions.',
+} = Astro.props;
+
+const steps = [
+  {
+    number: '01',
+    stepLabel: 'STEP 01 OF 03',
+    title: 'Pick a Build',
+    lede: 'Browse 600+ Minecraft building tutorials organized by category and difficulty.',
+    desc: 'From cozy starter houses and survival shelters to massive medieval castles, automatic farms, and nether portals. Every build displays its exact step count upfront so you always know what you are committing to before placing a single block.',
+    mockup: '/mockups/app-main.png',
+    alt: 'WBuilds App - Browse Minecraft building tutorials and categories',
+  },
+  {
+    number: '02',
+    stepLabel: 'STEP 02 OF 03',
+    title: 'Gather Materials',
+    lede: 'Get the exact material list with block counts before placing a single block.',
+    desc: 'Know every single block you need before you start, like a Minecraft blueprint with an itemized shopping list. Covers foundations, interior furnishings, fences, lanterns, and slabs so you never run out of materials halfway through.',
+    mockup: '/mockups/download-app-phone.png',
+    alt: 'WBuilds App - Itemized Minecraft material list with exact block quantities',
+  },
+  {
+    number: '03',
+    stepLabel: 'STEP 03 OF 03',
+    title: 'Build Step-by-Step',
+    lede: 'Follow clear, numbered block-by-block instructions with chunk-style guidance.',
+    desc: 'Place a handful of blocks at a time with clean visual diagrams showing exactly where blocks go relative to what you already built. Move forward or backward at your own pace. Progress saves automatically so you can resume anytime.',
+    mockup: '/mockups/app-main.png',
+    alt: 'WBuilds App - Numbered step-by-step Minecraft building guide',
+  },
+];
+---
+
+<div class="scroll-lock-wrapper" id="how-it-works">
+  <!-- Sticky Stage that locks in viewport during scroll -->
+  <div class="scroll-sticky-stage">
+    <div class="stage-container">
+      <!-- Main Enclosed Black Card -->
+      <section class="how-it-works-card" aria-label="How WBuilds works in three steps">
+        <!-- Card Header Stack -->
+        <header class="card-header">
+          <div class="header-left">
+            <h2 class="header-title">
+              <span>{headingLine1}</span>
+              <span class="title-accent">{headingLine2}</span>
+            </h2>
+          </div>
+          <div class="header-right">
+            <p class="header-desc">{subtitle}</p>
+          </div>
+        </header>
+
+        <!-- Main Interactive 2-Column Story -->
+        <div class="card-story">
+          <!-- Left Column: ONLY the active step's relevant text is displayed -->
+          <div class="step-text-display-col">
+            <!-- Step Tracker Indicator (3 segments + label) -->
+            <div class="step-tracker-bar">
+              <div class="step-progress-segments" role="tablist" aria-label="Step progress tabs">
+                {steps.map((step, i) => (
+                  <button
+                    type="button"
+                    class={`tracker-segment ${i === 0 ? 'is-active' : ''}`}
+                    data-step-target={i}
+                    role="tab"
+                    id={`step-tab-${i}`}
+                    aria-selected={i === 0 ? 'true' : 'false'}
+                    aria-label={`Step ${i + 1}: ${step.title}`}
+                  >
+                    <span class="segment-fill" data-segment-fill={i}></span>
+                  </button>
+                ))}
+              </div>
+              <span class="step-label-tag" id="active-step-label">STEP 01 OF 03</span>
+            </div>
+
+            <!-- Single-Active Step Text Slides (Only one visible at a time) -->
+            <div class="step-text-slides-wrap">
+              {steps.map((step, index) => (
+                <article
+                  class={`step-text-slide ${index === 0 ? 'is-active' : ''}`}
+                  data-step-slide={index}
+                  role="tabpanel"
+                  aria-labelledby={`step-tab-${index}`}
+                >
+                  <div class="step-num-badge" aria-hidden="true">{step.number}</div>
+                  <h3 class="step-slide-title">{step.title}</h3>
+                  <p class="step-slide-lede">{step.lede}</p>
+                  <p class="step-slide-desc">{step.desc}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <!-- Right Column: Mockup Display with Bottom 20% Clipped inside Container -->
+          <div class="mockup-column" aria-live="polite">
+            <div class="mockup-stage-frame">
+              <!-- Phone Mockups Stack (Bottom 20% submerged/clipped inside card) -->
+              <div class="mockup-crop-wrap">
+                {steps.map((step, index) => (
+                  <div
+                    class={`mockup-slide ${index === 0 ? 'is-active' : ''}`}
+                    data-mockup-slide={index}
+                  >
+                    <img
+                      src={step.mockup}
+                      alt={step.alt}
+                      class="phone-mockup-img"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ========================================================
+     SCROLL-LOCK WRAPPER (TALL CONTAINER FOR PINNED TRAVEL)
+     ======================================================== */
+  .scroll-lock-wrapper {
+    position: relative;
+    width: 100%;
+    /* 3 steps travel = 220vh for responsive scroll advance and easy transition to footer */
+    height: 220vh;
+    background-color: #ffffff;
+  }
+
+  /* Sticky Stage locked in viewport while user scrolls through 300vh */
+  .scroll-sticky-stage {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 48px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .stage-container {
+    max-width: 1600px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ========================================================
+     MAIN ENCLOSED BLACK CARD CONTAINER
+     ======================================================== */
+  .how-it-works-card {
+    width: 100%;
+    height: clamp(580px, 82vh, 720px);
+    background-color: #111215;
+    border-radius: 32px;
+    overflow: hidden; /* Crucial: cleanly clips bottom 20% of embedded phone mockup */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 48px 56px 0; /* No bottom padding so phone clips cleanly at bottom edge */
+    box-shadow: 0 24px 60px -15px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-sizing: border-box;
+  }
+
+  /* ========================================================
+     CARD HEADER: Title + Description (No Pills)
+     ======================================================== */
+  .card-header {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 40px;
+    width: 100%;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
+  }
+
+  .header-left {
+    display: flex;
+    flex-direction: column;
+    max-width: 720px;
+  }
+
+  .header-title {
+    font-family: var(--font-heading, 'Inter', -apple-system, sans-serif);
+    font-size: clamp(32px, 3.8vw, 54px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    color: #ffffff;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .title-accent {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  .header-right {
+    max-width: 440px;
+    padding-bottom: 4px;
+  }
+
+  .header-desc {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: -0.2px;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+  }
+
+  /* ========================================================
+     STORY LAYOUT: Left Single Step Text + Right Embedded Mockup
+     ======================================================== */
+  .card-story {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 56px;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* Left Column: Displays ONLY the relevant step text (no scrolling lists) */
+  .step-text-display-col {
+    flex: 1 1 540px;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px 0 36px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  /* Step Tracker Bar (Progress segments + Label) */
+  .step-tracker-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .step-progress-segments {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tracker-segment {
+    width: 44px;
+    height: 4px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.14);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.25s ease;
+  }
+
+  .tracker-segment:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+
+  .segment-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background-color: #ffffff;
+    border-radius: 999px;
+    transition: width 0.15s linear;
+  }
+
+  .tracker-segment.is-active .segment-fill {
+    width: 100%;
+  }
+
+  .step-label-tag {
+    font-family: var(--font-body, monospace);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+  }
+
+  /* Single-Active Step Text Slides Wrapper */
+  .step-text-slides-wrap {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    min-height: 240px;
+  }
+
+  /* Step Text Slide: Only the active slide is shown */
+  .step-text-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    opacity: 0;
+    transform: translateY(16px);
+    pointer-events: none;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .step-text-slide.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .step-num-badge {
+    font-family: var(--font-body, monospace);
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.4);
+    display: inline-block;
+  }
+
+  .step-slide-title {
+    font-family: var(--font-heading, 'Inter', sans-serif);
+    font-size: clamp(28px, 3.2vw, 42px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -1.2px;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  .step-slide-lede {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.2px;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+  }
+
+  .step-slide-desc {
+    font-family: var(--font-body, 'Inter', sans-serif);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: -0.15px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    max-width: 540px;
+  }
+
+  /* ========================================================
+     RIGHT COLUMN: Embedded Mockup Stage (Bottom 20% Clipped)
+     ======================================================== */
+  .mockup-column {
+    flex: 1 1 480px;
+    max-width: 580px;
+    position: relative;
+    display: flex;
+    align-items: flex-end; /* Anchors phone to the bottom */
+    justify-content: center;
+    height: 100%;
+    overflow: hidden; /* Clips bottom of phone mockup */
+  }
+
+  .mockup-stage-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Wrap that positions phone so bottom ~20% is submerged/clipped */
+  .mockup-crop-wrap {
+    position: relative;
+    width: 360px;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    z-index: 2;
+  }
+
+  /* Slide items stacked on top of each other */
+  .mockup-slide {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mockup-slide.is-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* Phone Mockup Image: bottom 20% extends beyond the bottom border of the card */
+  .phone-mockup-img {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    object-position: top center;
+    border-radius: 36px 36px 0 0;
+    box-shadow: 0 32px 80px -16px rgba(0, 0, 0, 0.6);
+    /* translateY pushes bottom 20% below card edge to appear embedded */
+    transform: translateY(12px);
+  }
+
+  /* ========================================================
+     RESPONSIVE BREAKPOINTS
+     ======================================================== */
+  @media (max-width: 1200px) {
+    .how-it-works-card {
+      padding: 40px 40px 0;
+    }
+
+    .mockup-crop-wrap {
+      width: 310px;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .scroll-lock-wrapper {
+      height: auto;
+    }
+
+    .scroll-sticky-stage {
+      position: static;
+      height: auto;
+      padding: 0 24px 96px;
+    }
+
+    .how-it-works-card {
+      height: auto;
+      padding: 40px 24px 0;
+      border-radius: 24px;
+    }
+
+    .card-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .card-story {
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .mockup-column {
+      width: 100%;
+      height: 420px;
+      max-width: none;
+    }
+
+    .mockup-crop-wrap {
+      width: 280px;
+    }
+
+    .step-text-display-col {
+      max-width: none;
+      padding: 16px 0 0;
+    }
+
+    .step-text-slides-wrap {
+      min-height: 220px;
+    }
+  }
+</style>
+
+<script>
+  // Scroll-Driven Controller showing ONLY the active step's text and mockup
+  const initScrollDrivenSteps = () => {
+    const wrapper = document.querySelector<HTMLElement>('.scroll-lock-wrapper');
+    const stepSlides = document.querySelectorAll<HTMLElement>('.step-text-slide');
+    const mockupSlides = document.querySelectorAll<HTMLElement>('.mockup-slide');
+    const segments = document.querySelectorAll<HTMLElement>('.tracker-segment');
+    const fills = document.querySelectorAll<HTMLElement>('[data-segment-fill]');
+    const labelEl = document.getElementById('active-step-label');
+
+    if (!wrapper || stepSlides.length === 0) return;
+
+    let currentStep = 0;
+    const totalSteps = stepSlides.length;
+
+    const stepLabels = ['STEP 01 OF 03', 'STEP 02 OF 03', 'STEP 03 OF 03'];
+
+    // Function to apply active step visually
+    const applyStep = (index: number) => {
+      if (index === currentStep && stepSlides[index].classList.contains('is-active')) return;
+      currentStep = index;
+
+      // Update active text slide (only one shown at a time)
+      stepSlides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === index);
+      });
+
+      // Update active mockup slide
+      mockupSlides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === index);
+      });
+
+      // Update segment indicators
+      segments.forEach((seg, i) => {
+        const isActive = i === index;
+        seg.classList.toggle('is-active', isActive);
+        seg.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      // Update step label
+      if (labelEl && stepLabels[index]) {
+        labelEl.textContent = stepLabels[index];
+      }
+    };
+
+    // Scroll listener calculates progress within the 300vh wrapper
+    const onScroll = () => {
+      if (window.innerWidth <= 980) return;
+
+      const rect = wrapper.getBoundingClientRect();
+      const totalScrollable = wrapper.offsetHeight - window.innerHeight;
+
+      if (totalScrollable <= 0) return;
+
+      // Calculate progress from 0 (entry) to 1 (exit)
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+
+      // Divide 0..1 into 3 step segments:
+      // 0.00 to 0.33 -> Step 0 (01)
+      // 0.33 to 0.67 -> Step 1 (02)
+      // 0.67 to 1.00 -> Step 2 (03)
+      let activeIndex = 0;
+      if (progress >= 0.66) {
+        activeIndex = 2;
+      } else if (progress >= 0.33) {
+        activeIndex = 1;
+      } else {
+        activeIndex = 0;
+      }
+
+      applyStep(activeIndex);
+
+      // Animate progress fill inside segments
+      fills.forEach((fill, i) => {
+        const segmentStart = i / totalSteps;
+        const segmentEnd = (i + 1) / totalSteps;
+        if (progress >= segmentEnd) {
+          fill.style.width = '100%';
+        } else if (progress <= segmentStart) {
+          fill.style.width = '0%';
+        } else {
+          const segProgress = (progress - segmentStart) / (segmentEnd - segmentStart);
+          fill.style.width = `${Math.round(segProgress * 100)}%`;
+        }
+      });
+    };
+
+    // Click handler on tracker segments to smoothly jump to corresponding step
+    segments.forEach((seg, index) => {
+      seg.addEventListener('click', () => {
+        if (window.innerWidth <= 980) {
+          applyStep(index);
+          return;
+        }
+
+        const totalScrollable = wrapper.offsetHeight - window.innerHeight;
+        const stepFraction = (index + 0.5) / totalSteps;
+        const wrapperTop = wrapper.getBoundingClientRect().top + window.scrollY;
+        const targetScrollY = wrapperTop + stepFraction * totalScrollable;
+
+        window.scrollTo({
+          top: targetScrollY,
+          behavior: 'smooth',
+        });
+      });
+    });
+
+    // Window scroll listener with passive performance flag
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    onScroll();
+  };
+
+  // Run on initial load and Astro page transitions
+  initScrollDrivenSteps();
+  document.addEventListener('astro:page-load', initScrollDrivenSteps);
+</script>
