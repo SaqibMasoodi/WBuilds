@@ -1,3 +1,5 @@
+import { withBase } from '../utils/paths';
+
 export interface NavItem {
   label: string;
   href: string;
@@ -5,41 +7,41 @@ export interface NavItem {
 }
 
 export const mainNavItems: NavItem[] = [
-  { label: 'Browse Builds', href: '/#featured-builds' },
-  { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Features', href: '/features' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'Reviews', href: '/reviews' },
-  { label: 'FAQ', href: '/faq' },
+  { label: 'Browse Builds', href: withBase('/#featured-builds') },
+  { label: 'How It Works', href: withBase('/how-it-works') },
+  { label: 'Features', href: withBase('/features') },
+  { label: 'Pricing', href: withBase('/pricing') },
+  { label: 'Reviews', href: withBase('/reviews') },
+  { label: 'FAQ', href: withBase('/faq') },
 ];
 
 export const footerNavSections = [
   {
     title: 'Explore',
     items: [
-      { label: 'Browse Builds', href: '/#featured-builds' },
-      { label: 'How It Works', href: '/how-it-works' },
-      { label: 'Features', href: '/features' },
-      { label: 'Pricing', href: '/pricing' },
-      { label: 'Reviews', href: '/reviews' },
-      { label: 'FAQ', href: '/faq' },
+      { label: 'Browse Builds', href: withBase('/#featured-builds') },
+      { label: 'How It Works', href: withBase('/how-it-works') },
+      { label: 'Features', href: withBase('/features') },
+      { label: 'Pricing', href: withBase('/pricing') },
+      { label: 'Reviews', href: withBase('/reviews') },
+      { label: 'FAQ', href: withBase('/faq') },
     ],
   },
   {
     title: 'Company',
     items: [
-      { label: 'About Us', href: '/about' },
-      { label: 'Contact', href: '/contact' },
-      { label: 'Creator Program', href: '/discount' },
-      { label: 'vs YouTube & Blueprints', href: '/vs-youtube-schematica' },
+      { label: 'About Us', href: withBase('/about') },
+      { label: 'Contact', href: withBase('/contact') },
+      { label: 'Creator Program', href: withBase('/discount') },
+      { label: 'vs YouTube & Blueprints', href: withBase('/vs-youtube-schematica') },
     ],
   },
   {
     title: 'Legal',
     items: [
-      { label: 'Terms of Service', href: '/terms-of-service' },
-      { label: 'Privacy Policy', href: '/privacy-policy' },
-      { label: 'Refund Policy', href: '/refund-policy' },
+      { label: 'Terms of Service', href: withBase('/terms-of-service') },
+      { label: 'Privacy Policy', href: withBase('/privacy-policy') },
+      { label: 'Refund Policy', href: withBase('/refund-policy') },
     ],
   },
 ];

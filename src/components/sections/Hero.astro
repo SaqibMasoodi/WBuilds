@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../../utils/paths';
+
 interface Props {
   eyebrow?: string;
   headingLine1?: string;
@@ -20,7 +22,7 @@ const {
   bottomText = '600+ guides · Free on iOS, Android & Web',
   ctaText = 'Get the app',
   ctaHref = '#download',
-  bgImage = '/hero-bg.jpg',
+  bgImage = withBase('/hero-bg.jpg'),
 } = Astro.props;
 ---
 

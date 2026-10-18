@@ -49,10 +49,12 @@ const defaultFaqs: FaqItem[] = [
   },
 ];
 
+import { withBase } from '../../utils/paths';
+
 const {
   title = 'Frequently asked questions',
   subtitle = 'Everything you need to know about WBuilds guides, exact material lists, and editions.',
-  imageSrc = '/irongole.jpg',
+  imageSrc = withBase('/irongole.jpg'),
   faqs = defaultFaqs,
 } = Astro.props;
 ---

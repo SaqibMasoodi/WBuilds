@@ -7,6 +7,7 @@
 //   - Right: 4 distinct link columns (Explore, Support, Legal, Profile) with all key product pages.
 //   - Bottom: Copyright bar, quick legal links (Privacy, Terms, Refunds), and an international language/locale switcher pill.
 import { siteConfig } from '../../data/site';
+import { withBase } from '../../utils/paths';
 
 interface Props {
   email?: string;
@@ -21,27 +22,27 @@ interface NavLink {
 }
 
 const exploreLinks: NavLink[] = [
-  { label: 'Browse Builds', href: '/#build-progress' },
-  { label: 'How It Works', href: '/how-it-works' },
-  { label: 'Features', href: '/features' },
-  { label: 'WBuilds vs YouTube', href: '/vs-youtube-schematica' },
-  { label: 'Reviews & Ratings', href: '/reviews' },
-  { label: 'Pricing', href: '/pricing' },
+  { label: 'Browse Builds', href: withBase('/#build-progress') },
+  { label: 'How It Works', href: withBase('/how-it-works') },
+  { label: 'Features', href: withBase('/features') },
+  { label: 'WBuilds vs YouTube', href: withBase('/vs-youtube-schematica') },
+  { label: 'Reviews & Ratings', href: withBase('/reviews') },
+  { label: 'Pricing', href: withBase('/pricing') },
   { label: 'Get the App', href: '#download' },
 ];
 
 const supportLinks: NavLink[] = [
-  { label: 'FAQ', href: '/faq' },
-  { label: 'Contact Us', href: '/contact' },
+  { label: 'FAQ', href: withBase('/faq') },
+  { label: 'Contact Us', href: withBase('/contact') },
   { label: 'Discord Community', href: siteConfig.socials.discord, isExternal: true },
   { label: 'Reddit Community', href: siteConfig.socials.reddit, isExternal: true },
 ];
 
 const legalColumnLinks: NavLink[] = [
-  { label: 'Terms of Service', href: '/terms-of-service' },
-  { label: 'Privacy Policy', href: '/privacy-policy' },
-  { label: 'Refund & Cancellation', href: '/refund-policy' },
-  { label: 'About Us', href: '/about' },
+  { label: 'Terms of Service', href: withBase('/terms-of-service') },
+  { label: 'Privacy Policy', href: withBase('/privacy-policy') },
+  { label: 'Refund & Cancellation', href: withBase('/refund-policy') },
+  { label: 'About Us', href: withBase('/about') },
 ];
 
 const profileLinks: NavLink[] = [
@@ -50,9 +51,9 @@ const profileLinks: NavLink[] = [
 ];
 
 const bottomLegalLinks: NavLink[] = [
-  { label: 'Privacy', href: '/privacy-policy' },
-  { label: 'Terms', href: '/terms-of-service' },
-  { label: 'Refunds', href: '/refund-policy' },
+  { label: 'Privacy', href: withBase('/privacy-policy') },
+  { label: 'Terms', href: withBase('/terms-of-service') },
+  { label: 'Refunds', href: withBase('/refund-policy') },
 ];
 
 const languages = [
@@ -114,7 +115,7 @@ const languages = [
         <!-- Phone Mockup Positioned Exactly as in Reference Image -->
         <div class="card-download-mockup" aria-hidden="true">
           <img
-            src="/mockups/download-app-phone.png"
+            src={withBase('/mockups/download-app-phone.png')}
             alt=""
             class="mockup-phone-image"
             loading="lazy"
@@ -163,7 +164,7 @@ const languages = [
         <!-- Col 1: Identity, Tagline, Socials & Disclaimer -->
         <div class="footer-col-identity">
           <a href="#home" class="footer-brand" aria-label="WBuilds Home">
-            <img src="/brand/wbuilds-icon.webp" alt="" class="footer-brand-icon" width="28" height="28" />
+            <img src={withBase('/brand/wbuilds-icon.webp')} alt="" class="footer-brand-icon" width="28" height="28" />
             <span class="footer-brand-title">
               <span class="brand-highlight">W</span>Builds<span class="brand-dot">.</span>
             </span>

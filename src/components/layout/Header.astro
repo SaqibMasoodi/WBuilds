@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../../utils/paths';
+
 interface Props {
   brandName?: string;
 }
@@ -12,7 +14,7 @@ const { brandName = 'WBuilds' } = Astro.props;
     <!-- Left Brand Badge -->
     <a href="#home" class="brand-badge" aria-label="WBuilds Home">
       <img
-        src="/brand/wbuilds-icon.webp"
+        src={withBase('/brand/wbuilds-icon.webp')}
         alt=""
         class="brand-badge-icon"
         width="22"

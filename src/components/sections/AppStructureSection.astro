@@ -7,6 +7,8 @@
 // - Right column displays the matching app mockup clipped bottom ~20%
 // - Enclosed in black background card matching hero / download framing (no pill tags)
 
+import { withBase } from '../../utils/paths';
+
 interface Props {
   headingLine1?: string;
   headingLine2?: string;
@@ -26,7 +28,7 @@ const steps = [
     title: 'Pick a Build',
     lede: 'Browse 600+ Minecraft building tutorials organized by category and difficulty.',
     desc: 'From cozy starter houses and survival shelters to massive medieval castles, automatic farms, and nether portals. Every build displays its exact step count upfront so you always know what you are committing to before placing a single block.',
-    mockup: '/mockups/app-main.png',
+    mockup: withBase('/mockups/app-main.png'),
     alt: 'WBuilds App - Browse Minecraft building tutorials and categories',
   },
   {
@@ -35,7 +37,7 @@ const steps = [
     title: 'Gather Materials',
     lede: 'Get the exact material list with block counts before placing a single block.',
     desc: 'Know every single block you need before you start, like a Minecraft blueprint with an itemized shopping list. Covers foundations, interior furnishings, fences, lanterns, and slabs so you never run out of materials halfway through.',
-    mockup: '/mockups/download-app-phone.png',
+    mockup: withBase('/mockups/download-app-phone.png'),
     alt: 'WBuilds App - Itemized Minecraft material list with exact block quantities',
   },
   {
@@ -44,7 +46,7 @@ const steps = [
     title: 'Build Step-by-Step',
     lede: 'Follow clear, numbered block-by-block instructions with chunk-style guidance.',
     desc: 'Place a handful of blocks at a time with clean visual diagrams showing exactly where blocks go relative to what you already built. Move forward or backward at your own pace. Progress saves automatically so you can resume anytime.',
-    mockup: '/mockups/app-main.png',
+    mockup: withBase('/mockups/app-main.png'),
     alt: 'WBuilds App - Numbered step-by-step Minecraft building guide',
   },
 ];

@@ -1,4 +1,6 @@
 ---
+import { withBase } from '../../utils/paths';
+
 interface Props {
   heading?: string;
   subtitle?: string;
@@ -147,7 +149,7 @@ const activityBars = [
         <!-- Card 6: Large Tall Image Card (flex: 1 0 0; height: auto; min-height: 480px) -->
         <article class="bento-card card-tall-image">
           <img
-            src="/builds/build.jpg"
+            src={withBase('/builds/build.jpg')}
             alt="Oak Shade Minecraft Build"
             class="tall-bg-img"
             loading="lazy"

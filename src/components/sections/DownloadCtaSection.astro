@@ -1,4 +1,7 @@
 ---
+import { withBase } from '../../utils/paths';
+import { siteConfig } from '../../data/site';
+
 interface Props {
   eyebrow?: string;
   heading?: string;
@@ -12,8 +15,8 @@ const {
   eyebrow = 'WBUILDS APP',
   heading = 'Start building the worlds of tomorrow, today.',
   description = 'Get instant access to 600+ step-by-step Minecraft building guides, layer-by-layer blueprints, and exact material calculators. Free on iOS and Android.',
-  iosLink = 'https://apps.apple.com',
-  androidLink = 'https://play.google.com',
+  iosLink = siteConfig.appStoreUrl,
+  androidLink = siteConfig.playStoreUrl,
   platformNote = 'Free download · Works with Java, Bedrock & Pocket Edition',
 } = Astro.props;
 ---
@@ -25,7 +28,7 @@ const {
       <div class="cta-visual-col">
         <div class="phone-crop-wrap">
           <img
-            src="/mockups/download-app-phone.png"
+            src={withBase('/mockups/download-app-phone.png')}
             alt="WBuilds Mobile App Blueprint Interface"
             class="phone-mockup-img"
             loading="lazy"
