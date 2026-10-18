@@ -229,9 +229,9 @@ const {
 
   .faq-title {
     font-family: var(--font-heading, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
-    font-size: clamp(28px, 2.4vw, 38px);
+    font-size: clamp(var(--text-2xl), 2.4vw, var(--text-section-mobile));
     font-weight: 600;
-    line-height: 1.15;
+    line-height: var(--line-heading);
     letter-spacing: -0.8px;
     color: #111215;
     margin: 0;
@@ -239,7 +239,7 @@ const {
 
   .faq-subtitle {
     font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 15px;
+    font-size: var(--text-base);
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.1px;
@@ -306,7 +306,7 @@ const {
 
   .faq-card-question {
     font-family: var(--font-heading, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
-    font-size: clamp(15.5px, 1.3vw, 18px);
+    font-size: clamp(var(--text-base), 1.3vw, var(--text-md));
     font-weight: 500;
     line-height: 1.35;
     letter-spacing: -0.3px;
@@ -437,11 +437,11 @@ const {
     }
 
     .faq-card-question {
-      font-size: 15px;
+      font-size: var(--text-base);
     }
 
     .faq-card-answer {
-      font-size: 13.5px;
+      font-size: var(--text-sm);
       min-height: auto;
     }
   }

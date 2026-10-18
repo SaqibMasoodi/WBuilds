@@ -213,10 +213,10 @@ const steps = [
 
   .header-title {
     font-family: var(--font-heading, 'Inter', -apple-system, sans-serif);
-    font-size: clamp(32px, 3.8vw, 54px);
+    font-size: clamp(var(--text-2xl), 3.8vw, var(--text-3xl));
     font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -2px;
+    line-height: var(--line-heading);
+    letter-spacing: var(--tracking-heading);
     color: #ffffff;
     margin: 0;
     display: flex;
@@ -235,7 +235,7 @@ const steps = [
 
   .header-desc {
     font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 15px;
+    font-size: var(--text-base);
     font-weight: 400;
     line-height: 1.55;
     letter-spacing: -0.2px;
@@ -321,7 +321,7 @@ const steps = [
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.1em;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--color-text-on-dark-muted);
     text-transform: uppercase;
   }
 
@@ -360,15 +360,15 @@ const steps = [
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.08em;
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--color-text-on-dark-muted);
     display: inline-block;
   }
 
   .step-slide-title {
     font-family: var(--font-heading, 'Inter', sans-serif);
-    font-size: clamp(28px, 3.2vw, 42px);
+    font-size: clamp(var(--text-2xl), 3.2vw, var(--text-section-mobile));
     font-weight: 500;
-    line-height: 1.15;
+    line-height: var(--line-heading);
     letter-spacing: -1.2px;
     color: #ffffff;
     margin: 0;
@@ -376,7 +376,7 @@ const steps = [
 
   .step-slide-lede {
     font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 17px;
+    font-size: var(--text-md);
     font-weight: 500;
     line-height: 1.5;
     letter-spacing: -0.2px;
@@ -386,7 +386,7 @@ const steps = [
 
   .step-slide-desc {
     font-family: var(--font-body, 'Inter', sans-serif);
-    font-size: 15px;
+    font-size: var(--text-base);
     font-weight: 400;
     line-height: 1.6;
     letter-spacing: -0.15px;
@@ -506,6 +506,7 @@ const steps = [
     }
 
     .mockup-column {
+      flex: none;
       width: 100%;
       height: 420px;
       max-width: none;
@@ -516,12 +517,24 @@ const steps = [
     }
 
     .step-text-display-col {
+      flex: none;
       max-width: none;
       padding: 16px 0 0;
     }
 
     .step-text-slides-wrap {
-      min-height: 220px;
+      display: grid;
+      min-height: 0;
+    }
+
+    .step-text-slide {
+      position: relative;
+      grid-area: 1 / 1;
+      visibility: hidden;
+    }
+
+    .step-text-slide.is-active {
+      visibility: visible;
     }
   }
 </style>

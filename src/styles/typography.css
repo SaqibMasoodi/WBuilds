@@ -10,13 +10,14 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   color: var(--color-text-primary);
-  line-height: 1.2;
+  line-height: var(--line-heading);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--tracking-heading);
 }
 
 h1 {
-  font-size: var(--text-4xl);
+  font-size: clamp(var(--text-section-mobile), 5vw, var(--text-4xl));
+  line-height: var(--line-display);
 }
 
 h2 {
@@ -40,7 +41,7 @@ h6 {
 }
 
 p {
-  line-height: 1.7;
+  line-height: var(--line-body);
   color: var(--color-text-secondary);
 }
 
